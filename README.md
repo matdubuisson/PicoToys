@@ -1,6 +1,17 @@
+# Source
+
+All these codes are inspired from :
+https://github.com/raspberrypi/pico-examples/
+
 # Setup a project (hello_world example)
 
-0) Make a new directory containing :
+0) Export location of the sdk
+Why doing this ? To avoid to copy paste the whole SDK in each project. Be ecolo please !!
+```bash
+export PICO_SDK_PATH=/home/racteur/PicoProjects/pico-sdk/
+```
+
+1) Make a new directory containing :
     - CMakeLists.txt
         ```bash
         cmake_minimum_required(VERSION 3.13)
@@ -55,7 +66,7 @@
         }
         ```
 
-1) Create a build directory (for elf and uf2 files and other stuff) :
+2) Create a build directory (for elf and uf2 files and other stuff) :
 ```bash
 mkdir build
 cd build/
@@ -63,7 +74,7 @@ cmake -DPICO_BOARD=pico_w ..
 make hello_world
 ```
 
-2) Upload UF2 file on rpi
+3) Upload UF2 file on rpi
 
 Find it
 
@@ -83,7 +94,7 @@ sudo mount /dev/sdc1 ~/USB/
 sudo cp hello_world.uf2 ~/USB/.
 ```
 
-3) Find port and connect to it
+4) Find port and connect to it
 
 ```bash
 ls -l /dev/ | grep -e USB -e ACM
