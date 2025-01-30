@@ -1,17 +1,8 @@
-cmake_minimum_required(VERSION 3.13)
+# All other stuff defined in parent directory's CMakeLists.txt
 
-# initialize the SDK based on PICO_SDK_PATH
-# note: this must happen before project()
-include(pico_sdk_import.cmake)
-
-project(blink_led)
-
-# initialize the Raspberry Pi Pico SDK
-pico_sdk_init()
-
-# rest of your project
-
-add_executable(blink_led
+# Define the output executables name
+add_executable(
+    blink_led
     blink_led.c
 )
 
