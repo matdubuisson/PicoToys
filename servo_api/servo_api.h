@@ -12,9 +12,9 @@ typedef struct
     bool invert;
 } Servo;
 
-void ServoInit(Servo *s, uint32_t gpio, bool invert);
-void ServoOn(Servo *s);
-void ServoOff(Servo *s);
-void ServoPosition(Servo *s, uint32_t p);
+void servo_init(Servo *s, uint32_t gpio, bool invert);
+void servo_on(Servo *s);
+void servo_off(Servo *s);
+void servo_percent(Servo *s, uint32_t p);
 
 #endif

@@ -63,7 +63,12 @@ add_subdirectory_exclude_platforms(test_servo)
 add_subdirectory_exclude_platforms(temperature_and_light_sensors)
 add_subdirectory_exclude_platforms(external_servo_lib)
 
+set(ULTRASONIC_API_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ultrasonic_api)
+add_subdirectory_exclude_platforms(ultrasonic_api)
+
 set(SERVO_API_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/servo_api)
 add_subdirectory_exclude_platforms(servo_api)
 
 add_subdirectory_exclude_platforms(test_include_servo_api)
+
+add_subdirectory_exclude_platforms(dummy)

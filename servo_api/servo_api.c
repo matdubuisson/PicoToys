@@ -29,7 +29,7 @@ static void pwm_set_dutyH(uint32_t slice_num, uint32_t chan, int32_t d) {
     pwm_set_chan_level(slice_num, chan, pwm_get_wrap(slice_num) * d / 10000);
 }
 
-extern void ServoInit(Servo *s, uint32_t gpio, bool invert) {
+extern void servo_init(Servo *s, uint32_t gpio, bool invert) {
     gpio_set_function(gpio, GPIO_FUNC_PWM);
     s->gpio = gpio;
     s->slice = pwm_gpio_to_slice_num(gpio);
@@ -51,16 +51,16 @@ extern void ServoInit(Servo *s, uint32_t gpio, bool invert) {
     s->invert = invert;
 }
 
-extern void ServoOn(Servo *s) {
+extern void servo_on(Servo *s) {
     pwm_set_enabled(s->slice, true);
     s->on = true;
 }
 
-extern void ServoOff(Servo *s) {
+extern void servo_off(Servo *s) {
     pwm_set_enabled(s->slice, false);
     s->on = false;
 }
 
-extern void ServoPosition(Servo *s, uint32_t p) {
+extern void servo_percent(Servo *s, uint32_t p) {
     pwm_set_dutyH(s->slice, s->chan, p * 10 + 250);
 }
