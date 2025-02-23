@@ -71,4 +71,7 @@ add_subdirectory_exclude_platforms(servo_api)
 
 add_subdirectory_exclude_platforms(test_include_servo_api)
 
+set(LN298_MOTOR_DRIVER_API_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ln298_motor_driver_api)
+add_subdirectory_exclude_platforms(ln298_motor_driver_api)
+
 add_subdirectory_exclude_platforms(dummy)
