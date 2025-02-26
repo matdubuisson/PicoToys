@@ -1,0 +1,5 @@
+add_subdirectory_exclude_platforms(test_ultrasonic_api)
+
+add_subdirectory_exclude_platforms(test_servo_api)
+
+add_subdirectory_exclude_platforms(test_ln298_motor_driver_api)

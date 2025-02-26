@@ -5,6 +5,7 @@
 
 #include "ultrasonic_api.h"
 #include "servo_api.h"
+#include "ln298_motor_driver_api.h"
 
 #define FORWARD_LEFT 10
 #define BACKWARD_LEFT 11
@@ -12,46 +13,6 @@
 #define BACKWARD_RIGHT 12
 
 #define SERVO 20
-
-static void stop (void) {
-    gpio_put(FORWARD_LEFT, false);
-    gpio_put(BACKWARD_LEFT, false);
-    gpio_put(FORWARD_RIGHT, false);
-    gpio_put(BACKWARD_RIGHT, false);
-    return;
-}
-
-static void left (void) {
-    gpio_put(FORWARD_LEFT, false);
-    gpio_put(BACKWARD_LEFT, true);
-    gpio_put(FORWARD_RIGHT, true);
-    gpio_put(BACKWARD_RIGHT, false);
-    return;
-}
-
-static void right (void) {
-    gpio_put(FORWARD_LEFT, true);
-    gpio_put(BACKWARD_LEFT, false);
-    gpio_put(FORWARD_RIGHT, false);
-    gpio_put(BACKWARD_RIGHT, true);
-    return;
-}
-
-static void forward (void) {
-    gpio_put(FORWARD_LEFT, true);
-    gpio_put(BACKWARD_LEFT, false);
-    gpio_put(FORWARD_RIGHT, true);
-    gpio_put(BACKWARD_RIGHT, false);
-    return;
-}
-
-static void backward (void) {
-    gpio_put(FORWARD_LEFT, false);
-    gpio_put(BACKWARD_LEFT, true);
-    gpio_put(FORWARD_RIGHT, false);
-    gpio_put(BACKWARD_RIGHT, true);
-    return;
-}
 
 static void blink (void) {
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
@@ -74,17 +35,11 @@ int main (void) {
     servo_on(&servo);
     servo_percent(&servo, 45);
 
-    gpio_init(FORWARD_LEFT);
-    gpio_init(BACKWARD_LEFT);
-    gpio_init(FORWARD_RIGHT);
-    gpio_init(BACKWARD_RIGHT);
+    LN298MotorDriverPWM lnmd;
+    init_default_pwm_ln298_motor_driver(&lnmd, 6, 8, 10, 12);
+    uint16_t duty = 20;
 
-    gpio_set_dir(FORWARD_LEFT, GPIO_OUT);
-    gpio_set_dir(BACKWARD_LEFT, GPIO_OUT);
-    gpio_set_dir(FORWARD_RIGHT, GPIO_OUT);
-    gpio_set_dir(BACKWARD_RIGHT, GPIO_OUT);
-
-    stop();
+    stop_pwm_ln298_motor_driver(&lnmd);
 
     blink();
 
@@ -114,15 +69,15 @@ int main (void) {
         if (distance == UINT32_MAX) {
             printf("ERROR\n");
             // current_movement = STOP;
-            stop();
+            stop_pwm_ln298_motor_driver(&lnmd);
             blink();
             continue;
         } else if (distance >= SECURITY_DISTANCE_MM) {
             printf("FORWARD\n");
             // current_movement = FORWARD;
-            forward();
+            forward_pwm_ln298_motor_driver(&lnmd, duty);
         } else {
-            stop();
+            stop_pwm_ln298_motor_driver(&lnmd);
 
             servo_percent(&servo, 80);
             sleep_ms(500);
@@ -135,14 +90,14 @@ int main (void) {
             servo_percent(&servo, 45);
 
             printf("BACKWARD\n");
-            backward();
+            backward_pwm_ln298_motor_driver(&lnmd, duty);
             sleep_ms(300);
 
-            if (distance <= distance2) right();
-            else left();
+            if (distance <= distance2) right_pwm_ln298_motor_driver(&lnmd, duty);
+            else left_pwm_ln298_motor_driver(&lnmd, duty);
 
             sleep_ms(200);
-            stop();
+            stop_pwm_ln298_motor_driver(&lnmd);
         }
     }
 
